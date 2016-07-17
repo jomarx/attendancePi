@@ -22,7 +22,7 @@ from unidecode import unidecode
 
 def connect():
     # Mysql connection setup. Insert your values here
-    return MySQLdb.connect(host="localhost", user="pi", passwd="raspberry", db="pi")
+    return MySQLdb.connect(host="localhost", user="root", passwd="magic4ever", db="pi")
 
 def insertReading(tagId,action):
     db = connect()
@@ -34,7 +34,7 @@ def insertReading(tagId,action):
     row = cur.fetchone();
     db.close()
     if(row==None):
-        return "Neznama karta"
+        return "Unknown Card"
     else:
         return unidecode(row[1]+", "+row[0])
 

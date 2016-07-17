@@ -63,7 +63,7 @@ def read():
 def readNfc(action):
     if(action==55):#7 - Incomming
         onScreen("Logging In...")
-        display.lcdWriteFirstLine("Prichod...")
+        display.lcdWriteFirstLine("Loading...")
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
         logging.info("Incomming - %s",cardId)
@@ -78,16 +78,16 @@ def readNfc(action):
         name = mysql.insertReading(cardId,Actions.outcomming)
         display.lcdWriteSecondLine(name)
     if(action==49):#1 - break start
-        onScreen("Zacatek pauzy...")
-        display.lcdWriteFirstLine("Pauza zacatek...")
+        onScreen("Please wait...")
+        display.lcdWriteFirstLine("Please Wait...")
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
         logging.info("Break start - %s",cardId)
         name = mysql.insertReading(cardId,Actions.breakstart)
         display.lcdWriteSecondLine(name)
     if(action==51):#3 - break end
-        onScreen("Konec pauzy...")
-        display.lcdWriteFirstLine("Pauza konec...")
+        onScreen("End of wait...")
+        display.lcdWriteFirstLine("End of wait...")
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
         logging.info("Break end - %s",cardId)
@@ -159,7 +159,7 @@ def getOneKey():
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
 
-displayTime=True
+#displayTime=True
 def printDateToDisplay():
     while True:
         #Display current time on display, until global variable is set
@@ -182,7 +182,7 @@ def main():
         while True:
             display.lcdWriteSecondLine("Choose an action...")
             global displayTime
-            displayTime=true
+            displayTime=True
             #Start new thread to show curent datetime on display
             # and wait for user input on keyboard
             thr = thread.start_new_thread(printDateToDisplay, ())
