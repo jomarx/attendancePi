@@ -38,13 +38,13 @@ DEBUG=True
 VERBOSE=True
 
 class Actions:
-    incomming=1
-    outcomming=2
-    breakstart=3
-    breakend=4
+    incomming=0
+    outcomming=1
+    breakstart=2
+    breakend=3
 
 if(DEBUG):
-    logging.basicConfig(format='%(asctime)s %(message)s',filename='attendance.log', level=logging.DEBUG)
+    logging.basicConfig(format='%(asctime)s %(message)s',filename='attnlog.log', level=logging.DEBUG)
 
 def debug(message):
     logging.debug(message)
@@ -61,24 +61,24 @@ def read():
     return cardId
 
 def readNfc(action):
-    if(action==55):#7 - Incomming
-        onScreen("Logging In...")
+    if(action==55):#7 - Incoming
+        onScreen("Time In.")
         display.lcdWriteFirstLine("Loading...")
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
         logging.info("Incomming - %s",cardId)
         name = mysql.insertReading(cardId,Actions.incomming)
         display.lcdWriteSecondLine(name)
-    if(action==57):#9 - outcomming
-        onScreen("...")
+    if(action==57):#9 - outgoing
+        onScreen("Time Out")
         display.lcdWriteFirstLine("Logging out...")
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
-        logging.info("Outcomming - %s",cardId)
+        logging.info("Outgoing - %s",cardId)
         name = mysql.insertReading(cardId,Actions.outcomming)
         display.lcdWriteSecondLine(name)
     if(action==49):#1 - break start
-        onScreen("Please wait...")
+        onScreen("Break Start.")
         display.lcdWriteFirstLine("Please Wait...")
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
@@ -86,8 +86,8 @@ def readNfc(action):
         name = mysql.insertReading(cardId,Actions.breakstart)
         display.lcdWriteSecondLine(name)
     if(action==51):#3 - break end
-        onScreen("End of wait...")
-        display.lcdWriteFirstLine("End of wait...")
+        onScreen("Break End.")
+        display.lcdWriteFirstLine("BreakEnd.")
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
         logging.info("Break end - %s",cardId)
@@ -113,9 +113,9 @@ def readNfc(action):
             elif(lastAction==Actions.outcomming):
                 display.lcdWriteSecondLine("Check Out")
             elif(lastAction==Actions.breakstart):
-                display.lcdWriteSecondLine("Pauza zacatek")
+                display.lcdWriteSecondLine("Break Start")
             elif(lastAction==Actions.breakend):
-                display.lcdWriteSecondLine("End of Pause?")
+                display.lcdWriteSecondLine("Break End")
             a=getOneKey()
             if(a==49):#1
                 onScreen("Mazu")
